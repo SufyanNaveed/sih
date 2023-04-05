@@ -186,14 +186,14 @@ if (($this->module_lib->hasActive('income')) || ($this->module_lib->hasActive('e
                             <?php } } ?>
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Chart of Account</a></li>
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Opening Balance</a></li>
-                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Supplier Payment</a></li>
-                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Customer Receive</a></li>                    
+                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Bank Payment</a></li>
+                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Bank Receive</a></li>                    
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Cash Adjustment</a></li>
-                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Debit Voucher</a></li>
-                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Credit Voucher</a></li>                                         
+                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Bank Deposit</a></li>
+                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Bank Withdrawal</a></li>                                         
                             <!-- <li class=""><a href="#"><i class="fas fa-angle-right"></i> Contra Voucher</a></li>
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Journal Voucher</a></li> -->
-                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Vouchar Approval</a></li>
+                            <!-- <li class=""><a href="#"><i class="fas fa-angle-right"></i> Vouchar Approval</a></li> -->
                         </ul>
                     </li>
         <?php
