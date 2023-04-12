@@ -34,6 +34,27 @@ $genderList      = $this->customlib->getGender();
             </div>
             <div class="col-md-10">
                 <div class="box box-primary">
+                <form action="<?php echo site_url('admin/charges/import') ?>" id="employeeform" name="employeeform" method="post" enctype="multipart/form-data">
+                        <div class="box-body">
+                            <!--<?php echo $this->customlib->getCSRF(); ?>-->
+                            <div class="row">
+                                
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputFile"><?php echo $this->lang->line('select_csv_file'); ?></label><small class="req"> *</small>
+                                        <div><input  class="filestyle form-control" type='file' name='file' id="file" size='20' />
+                                            <span class="text-danger"><?php echo form_error('file'); ?></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-info btn-sm pull-right"><i class="fa fa-upload"></i> <?php echo 'Import'; ?></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
                     <div class="box-header with-border">
                         <h3 class="box-title titlefix"><?php echo $this->lang->line('charges') . " " . $this->lang->line('details'); ?></h3>
                         <div class="box-tools pull-right">

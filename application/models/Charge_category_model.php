@@ -56,8 +56,14 @@ class Charge_category_model extends CI_model
             $this->db->where('id', $data['id']);
             $this->db->update('charge_categories', $data);
         } else {
-            $this->db->insert('charge_categories', $data);
-            return $this->db->insert_id();
+            $this->db->select('name');
+            $this->db->from('charge_categories');
+            $this->db->where('name', $data['name']);
+            $res = $this->db->get();
+            if($res->num_rows() == 0){
+                $this->db->insert('charge_categories', $data);
+                return $this->db->insert_id();
+            }
         }
     }
 

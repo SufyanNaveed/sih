@@ -72,6 +72,62 @@ class Charges extends Admin_Controller
         echo json_encode($json_array);
     }
 
+    public function import()
+    {
+        
+        $this->form_validation->set_rules('file', $this->lang->line('file'), 'callback_handle_csv_upload');
+        $fields                   = array('charge_type', 'charge_category', 'code', 'description', 'standard_charge');
+        $data["fields"]           = $fields;
+
+        if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
+            $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+            if ($ext == 'csv') {
+                $file = $_FILES['file']['tmp_name'];
+                // echo '<pre>'; print_r($file); exit;
+                
+                $this->load->library('CSVReader');
+                $result = $this->csvreader->parse_file($file);
+
+                if (!empty($result)) {
+                    for ($i = 1; $i <= count($result); $i++) {
+
+                        // foreach ($result[$i] as $key => $value) {
+
+                            //echo '<pre>'; print_r($result[$i]); exit;
+                            $data = array(
+                                'name'     => $result[$i]['Category'],
+                                'description' => $result[$i]['Category'],
+                                'charge_type' => 'Services',
+                            );
+                            $insertt_id = $this->charge_category_model->addChargeCategory($data);
+                            
+                            $data = array(
+                                'charge_type'     => $result[$i]['Category'],
+                                'charge_category' => $result[$i]['Category'],
+                                'code'            => $result[$i]['Service'],
+                                'description'     => '',
+                                'standard_charge' => 0,
+                            );
+                            $insert_id       = $this->charge_model->add_charges($data);
+
+                            $schedule_data      = array(
+                                'charge_type' => $result[$i]['Category'],
+                                'charge_id'   => $insert_id,
+                                'org_id'      => 6,
+                                'org_charge'  => $result[$i]['Rate'],
+                            );
+                            $insert_data[] = $schedule_data;
+                            $this->tpa_model->add($insert_data);
+                        // }
+
+                        //exit;
+                    }
+                }
+            }
+            redirect('admin/charges');
+        } 
+    }
+    
     public function get_charge_category()
     {
         if (!$this->rbac->hasPrivilege('hospital_charges', 'can_view')) {
