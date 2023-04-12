@@ -35,8 +35,7 @@ $genderList      = $this->customlib->getGender();
             <div class="col-md-10">
                 <div class="box box-primary">
                 <!-- <form action="<?php echo site_url('admin/charges/import') ?>" id="employeeform" name="employeeform" method="post" enctype="multipart/form-data">
-                        <div class="box-body">
-                            <!--<?php echo $this->customlib->getCSRF(); ?>-->
+                        <div class="box-body"> 
                             <div class="row">
                                 
 
