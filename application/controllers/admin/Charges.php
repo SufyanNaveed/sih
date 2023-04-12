@@ -93,34 +93,34 @@ class Charges extends Admin_Controller
 
                         // foreach ($result[$i] as $key => $value) {
 
-                            //echo '<pre>'; print_r($result[$i]); exit;
-                            $data = array(
-                                'name'     => $result[$i]['Category'],
-                                'description' => $result[$i]['Category'],
-                                'charge_type' => 'Services',
-                            );
-                            $insertt_id = $this->charge_category_model->addChargeCategory($data);
+                            // echo '<pre>'; print_r($result[$i]); exit;
+                            // $data = array(
+                            //     'name'     => $result[$i]['Category'],
+                            //     'description' => $result[$i]['Category'],
+                            //     'charge_type' => 'Services',
+                            // );
+                            // $insertt_id = $this->charge_category_model->addChargeCategory($data);
                             
                             $data = array(
-                                'charge_type'     => $result[$i]['Category'],
-                                'charge_category' => $result[$i]['Category'],
-                                'code'            => $result[$i]['Service'],
+                                'charge_type'     => 'Procedures',
+                                'charge_category' => 'Department',
+                                'code'            => $result[$i]['dep'],
                                 'description'     => '',
-                                'standard_charge' => 0,
+                                'standard_charge' => $result[$i]['Rate'],
                             );
                             $insert_id       = $this->charge_model->add_charges($data);
 
-                            $schedule_data      = array(
-                                'charge_type' => $result[$i]['Category'],
-                                'charge_id'   => $insert_id,
-                                'org_id'      => 6,
-                                'org_charge'  => $result[$i]['Rate'],
-                            );
-                            $insert_data[] = $schedule_data;
-                            $this->tpa_model->add($insert_data);
+                            // $schedule_data      = array(
+                            //     'charge_type' => $result[$i]['Category'],
+                            //     'charge_id'   => $insert_id,
+                            //     'org_id'      => 6,
+                            //     'org_charge'  => $result[$i]['Rate'],
+                            // );
+                            // $insert_data[] = $schedule_data;
+                            // $this->tpa_model->add($insert_data);
                         // }
 
-                        //exit;
+                        // exit;
                     }
                 }
             }
