@@ -34,7 +34,7 @@ $genderList      = $this->customlib->getGender();
             </div>
             <div class="col-md-10">
                 <div class="box box-primary">
-                    <form action="<?php echo site_url('admin/charges/import') ?>" id="employeeform" name="employeeform" method="post" enctype="multipart/form-data">
+                    <!-- <form action="<?php echo site_url('admin/charges/import') ?>" id="employeeform" name="employeeform" method="post" enctype="multipart/form-data">
                         <div class="box-body"> 
                             <div class="row">
                                 <div class="col-md-6">
@@ -49,7 +49,7 @@ $genderList      = $this->customlib->getGender();
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </form> -->
 
 
                     <div class="box-header with-border">
