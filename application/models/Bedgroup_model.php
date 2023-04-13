@@ -56,6 +56,7 @@ class Bedgroup_model extends CI_Model
             $this->db->where("id", $data["id"])->update("bed_group", $data);
         } else {
             $this->db->insert("bed_group", $data);
+            return $this->db->insert_id();
         }
     }
 

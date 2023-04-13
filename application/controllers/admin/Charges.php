@@ -93,14 +93,35 @@ class Charges extends Admin_Controller
 
                         // foreach ($result[$i] as $key => $value) {
 
-                            $data = array(
-                                'item_category_id'  => 6,
-                                'name'     => $result[$i]['Item'],
-                                'unit' => 'pcs',
-                                'description' => $result[$i]['Item']
-                            );
-                                        $insert_id = $this->item_model->add($data);
+                            // $data = array(
+                            //     'item_category_id'  => 5,
+                            //     'name'     => $result[$i]['Item'],
+                            //     'unit' => 'pcs',
+                            //     'description' => $result[$i]['Item']
+                            // );
+                            // $insert_id = $this->item_model->add($data);
 
+                            $bedtype = array('name' => $result[$i]['Departments']);
+                            $bedtype_id = $this->bedtype_model->savebed($bedtype);
+
+                            $bed = array(
+                                'name' => $result[$i]['Departments'],
+                                'description' => $result[$i]['Departments'],
+                                'floor' => '3',
+                                'is_active' => '1'
+                            );
+                
+                            $bedgroup_id = $this->bedgroup_model->add_bed_group($bed);
+
+                            $beds = array(
+                                'name' => $result[$i]['Beds'],
+                                'bed_type_id' => $bedtype_id,
+                                'bed_group_id' => $bedgroup_id,
+                                'is_active' => 'yes'
+                            );
+                
+                            $this->bed_model->savebed($beds);
+                            
                             // echo '<pre>'; print_r($result[$i]); exit;
                             // $data = array(
                             //     'name'     => $result[$i]['Category'],

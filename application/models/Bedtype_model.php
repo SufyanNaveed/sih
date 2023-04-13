@@ -41,6 +41,7 @@ class Bedtype_model extends CI_Model
             $this->db->where("id", $data["id"])->update("bed_type", $data);
         } else {
             $this->db->insert("bed_type", $data);
+            return $this->db->insert_id();
         }
     }
 
