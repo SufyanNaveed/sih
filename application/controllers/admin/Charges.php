@@ -93,6 +93,14 @@ class Charges extends Admin_Controller
 
                         // foreach ($result[$i] as $key => $value) {
 
+                            $data = array(
+                                'item_category_id'  => 6,
+                                'name'     => $result[$i]['Item'],
+                                'unit' => 'pcs',
+                                'description' => $result[$i]['Item']
+                            );
+                                        $insert_id = $this->item_model->add($data);
+
                             // echo '<pre>'; print_r($result[$i]); exit;
                             // $data = array(
                             //     'name'     => $result[$i]['Category'],
@@ -101,14 +109,14 @@ class Charges extends Admin_Controller
                             // );
                             // $insertt_id = $this->charge_category_model->addChargeCategory($data);
                             
-                            $data = array(
-                                'charge_type'     => 'Procedures',
-                                'charge_category' => 'Department',
-                                'code'            => $result[$i]['dep'],
-                                'description'     => '',
-                                'standard_charge' => $result[$i]['Rate'],
-                            );
-                            $insert_id       = $this->charge_model->add_charges($data);
+                            // $data = array(
+                            //     'charge_type'     => 'Procedures',
+                            //     'charge_category' => 'Department',
+                            //     'code'            => $result[$i]['dep'],
+                            //     'description'     => '',
+                            //     'standard_charge' => $result[$i]['Rate'],
+                            // );
+                            // $insert_id       = $this->charge_model->add_charges($data);
 
                             // $schedule_data      = array(
                             //     'charge_type' => $result[$i]['Category'],
