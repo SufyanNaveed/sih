@@ -113,14 +113,21 @@ class Charges extends Admin_Controller
                 
                             $bedgroup_id = $this->bedgroup_model->add_bed_group($bed);
 
-                            $beds = array(
-                                'name' => $result[$i]['Beds'],
-                                'bed_type_id' => $bedtype_id,
-                                'bed_group_id' => $bedgroup_id,
-                                'is_active' => 'yes'
-                            );
-                
-                            $this->bed_model->savebed($beds);
+                            $bednum = explode('-',$result[$i]['Beds']);
+                            // echo '<pre>'; print_r($bednum); 
+                            // echo '<pre>'; print_r($bednum[0]); 
+                            // echo '<pre>'; print_r($bednum[1]); exit;
+
+                            for($y= $bednum[0]; $y <= $bednum[1]; $y++){
+                                
+                                $beds = array(
+                                    'name' => 'Bed'.$y,
+                                    'bed_type_id' => $bedtype_id,
+                                    'bed_group_id' => $bedgroup_id,
+                                    'is_active' => 'yes'
+                                );
+                                $this->bed_model->savebed($beds);
+                            }
                             
                             // echo '<pre>'; print_r($result[$i]); exit;
                             // $data = array(
