@@ -183,8 +183,11 @@ if (($this->module_lib->hasActive('income')) || ($this->module_lib->hasActive('e
                             <?php } } if ($this->module_lib->hasActive('expense')) {
                                 if ($this->rbac->hasPrivilege('expense', 'can_view')) {?>
                                 <li class="<?php echo set_Submenu('expense/index'); ?>"><a href="<?php echo base_url(); ?>admin/expense"><i class="fas fa-angle-right"></i> <?php echo $this->lang->line('expenses'); ?></a></li>
+                            <?php } } if ($this->module_lib->hasActive('accounts')) {
+                                if ($this->rbac->hasPrivilege('accounts', 'can_view')) {?>
+                                <li class="<?php echo set_Submenu('accounts/index'); ?>"><a href="<?php echo base_url(); ?>admin/accounts"><i class="fas fa-angle-right"></i> <?php echo $this->lang->line('accounts'); ?></a></li>
                             <?php } } ?>
-                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Chart of Account</a></li>
+                            <!-- <li class=""><a href="<?php echo base_url(); ?>admin/accounts"><i class="fas fa-angle-right"></i> Chart of Account</a></li> -->
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Opening Balance</a></li>
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Bank Payment</a></li>
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Bank Receive</a></li>                    
