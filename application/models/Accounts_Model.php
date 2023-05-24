@@ -53,6 +53,18 @@ class Accounts_model extends CI_Model
         }
     }
 
+    public function Spayment()
+    {
+        $data = $this->db->select("VNo as voucher")
+            ->from('acc_transaction') 
+            ->like('VNo', 'PM-', 'after')
+            ->order_by('ID','desc')
+            ->get()
+            ->result_array();
+        // echo '<pre>'; print_r($this->db->last_query()); exit;
+        return $data;
+    }
+    
     public function getTotal($search = '')
     {
         if (!empty($search)) {
@@ -234,4 +246,97 @@ class Accounts_model extends CI_Model
         return $query->result_array();
     }
 
+
+    public function supplier_payment_insert(){
+
+        // $bank_id = $this->input->post('bank_id',TRUE);
+        // if(!empty($bank_id)){
+        // //  $bankname     = $this->db->select('bank_name')->from('bank_add')->where('bank_id',$bank_id)->get()->row()->bank_name;
+        // //  $bankcoaid    = $this->db->select('HeadCode')->from('acc_coa')->where('HeadName',$bankname)->get()->row()->HeadCode;
+        //    }else{
+        //     $bankcoaid = '';
+        //    }
+           $voucher_no = addslashes(trim($this->input->post('txtVNo',TRUE)));
+            $Vtype     = "PM";
+            $cAID      = $this->input->post('cmbDebit',TRUE);
+            $dAID      = $this->input->post('txtCode',TRUE);
+            $Debit     = $this->input->post('txtAmount',TRUE);
+            $Credit    = 0;
+            $VDate     = $this->input->post('dtpDate',TRUE);
+            $Narration = addslashes(trim($this->input->post('txtRemarks',TRUE)));
+            $IsPosted  = 1;
+            $IsAppove  = 1;
+            $sup_id    = $this->input->post('supplier_id',TRUE);
+
+            $CreateBy  = $this->session->userdata('id');
+            $createdate= date('Y-m-d H:i:s');
+            $dbtid     = $dAID;
+            $Damnt     = $Debit;
+            $supplier_id = $sup_id;
+            $supinfo   = $this->db->select('*')->from('supplier_information')->where('supplier_id',$supplier_id)->get()->row();
+            $supplierdebit = array(
+              'VNo'            =>  $voucher_no,
+              'Vtype'          =>  $Vtype,
+              'VDate'          =>  $VDate,
+              'COAID'          =>  $dbtid,
+              'Narration'      =>  $Narration,
+              'Debit'          =>  $Damnt,
+              'Credit'         =>  0,
+              'IsPosted'       => $IsPosted,
+              'CreateBy'       => $CreateBy,
+              'CreateDate'     => $createdate,
+              'IsAppove'       => 1
+            ); 
+             $cc = array(
+              'VNo'            =>  $voucher_no,
+              'Vtype'          =>  $Vtype,
+              'VDate'          =>  $VDate,
+              'COAID'          =>  1020101,
+              'Narration'      =>  'Paid to '.$supinfo->supplier_name,
+              'Debit'          =>  0,
+              'Credit'         =>  $Damnt,
+              'IsPosted'       =>  1,
+              'CreateBy'       =>  $CreateBy,
+              'CreateDate'     =>  $createdate,
+              'IsAppove'       =>  1
+            ); 
+             $bankc = array(
+              'VNo'            =>  $voucher_no,
+              'Vtype'          =>  $Vtype,
+              'VDate'          =>  $VDate,
+              'COAID'          =>  $bankcoaid,
+              'Narration'      =>  'Supplier Payment To '.$supinfo->supplier_name,
+              'Debit'          =>  0,
+              'Credit'         =>  $Damnt,
+              'IsPosted'       =>  1,
+              'CreateBy'       =>  $CreateBy,
+              'CreateDate'     =>  $createdate,
+              'IsAppove'       =>  1
+            ); 
+              
+
+           
+              $this->db->insert('acc_transaction',$supplierdebit);
+
+              if($this->input->post('paytype',TRUE) == 2){
+                 $this->db->insert('acc_transaction',$bankc); 
+              }
+                if($this->input->post('paytype',TRUE) == 1){
+                   $this->db->insert('acc_transaction',$cc);
+                }
+            $this->session->set_flashdata('message', display('save_successfully'));
+          redirect('supplier_payment_received/'.$supplier_id.'/'.$voucher_no.'/'.$dbtid);
+    
+    }
+
+    public function Creceive()
+    {
+      return  $data = $this->db->select("VNo as voucher")
+            ->from('acc_transaction') 
+            ->like('VNo', 'CR-', 'after')
+            ->order_by('ID','desc')
+            ->get()
+            ->result_array();
+           
+    }
 }

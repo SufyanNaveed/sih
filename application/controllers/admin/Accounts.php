@@ -190,6 +190,65 @@ class Accounts extends Admin_Controller
         echo json_encode($array);
     }
 
+     
+    public function bank_payment()
+    {
+        if (!$this->module_lib->hasActive('accounts')) {
+            access_denied();
+        } 
+        $this->session->set_userdata('top_menu', 'accounts');
+        $this->session->set_userdata('sub_menu', 'accounts/bank_payment');
+        $data['title']       = 'Bank Payment';
+        $data['title_list']  = 'Bank Payment';
+        $data['accounts'] =  $this->accounts_model->get();
+        $data['voucher_no']  = $this->accounts_model->Spayment();
+        $this->load->view('layout/header', $data); 
+        $this->load->view('admin/accounts/bank_payment', $data);
+        $this->load->view('layout/footer', $data);
+    }
+    
+
+    public function create_bank_payment(){
+        $this->form_validation->set_rules('txtCode', 'txtCode'  ,'max_length[100]');
+        $this->form_validation->set_rules('paytype', 'paytype'  ,'required|max_length[2]');
+         $this->form_validation->set_rules('txtCode', 'code'  ,'required|max_length[30]');
+          $this->form_validation->set_rules('txtAmount', 'amount'  ,'required|max_length[30]');
+         if ($this->form_validation->run()) { 
+        if ($this->accounts_model->bank_payment_insert()) { 
+          $this->session->set_flashdata('message', 'Save successfully');
+          redirect('bank_payment');
+        }else{
+          $this->session->set_flashdata('exception', 'Please try again');
+        }
+        redirect("bank_payment");
+        }else{
+          $this->session->set_flashdata('exception',   validation_errors());
+          redirect("bank_payment");
+         }
+
+    }
+
+
+    public function bank_recieve()
+    {
+        if (!$this->module_lib->hasActive('accounts')) {
+            access_denied();
+        } 
+        $this->session->set_userdata('top_menu', 'accounts');
+        $this->session->set_userdata('sub_menu', 'accounts/bank_recieve');
+        $data['title']       = 'Bank Receive';
+        $data['title_list']  = 'Bank Receive';
+        $data['accounts'] =  $this->accounts_model->get();
+        $data['voucher_no']  = $this->accounts_model->Creceive();
+        $this->load->view('layout/header', $data); 
+        $this->load->view('admin/accounts/bank_recieve', $data);
+        $this->load->view('layout/footer', $data);
+    }
+    
+    
+    
+    
+    
     public function accountsSearch()
     {
         if (!$this->rbac->hasPrivilege('accounts_report', 'can_view')) {

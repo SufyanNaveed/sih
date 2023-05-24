@@ -186,11 +186,20 @@ if (($this->module_lib->hasActive('income')) || ($this->module_lib->hasActive('e
                             <?php } } if ($this->module_lib->hasActive('accounts')) {
                                 if ($this->rbac->hasPrivilege('accounts', 'can_view')) {?>
                                 <li class="<?php echo set_Submenu('accounts/index'); ?>"><a href="<?php echo base_url(); ?>admin/accounts"><i class="fas fa-angle-right"></i> <?php echo $this->lang->line('accounts'); ?></a></li>
+                            <?php } } if ($this->module_lib->hasActive('accounts')) {
+                                if ($this->rbac->hasPrivilege('accounts', 'can_view')) {?>
+                                <li class="<?php echo set_Submenu('accounts/index'); ?>"><a href="<?php echo base_url(); ?>admin/accounts"><i class="fas fa-angle-right"></i> <?php echo 'Opening Balance'; ?></a></li>
+                            <?php } } if ($this->module_lib->hasActive('accounts')) {
+                                if ($this->rbac->hasPrivilege('accounts', 'can_view')) {?>
+                                <li class="<?php echo set_Submenu('accounts/bank_payment'); ?>"><a href="<?php echo base_url(); ?>admin/accounts/bank_payment"><i class="fas fa-angle-right"></i> <?php echo 'Bank Payment'; ?></a></li>
+                            <?php } } if ($this->module_lib->hasActive('accounts')) {
+                                if ($this->rbac->hasPrivilege('accounts', 'can_view')) {?>
+                                <li class="<?php echo set_Submenu('accounts/bank_recieve'); ?>"><a href="<?php echo base_url(); ?>admin/accounts/bank_recieve"><i class="fas fa-angle-right"></i> <?php echo 'Bank Receive'; ?></a></li>
                             <?php } } ?>
-                            <!-- <li class=""><a href="<?php echo base_url(); ?>admin/accounts"><i class="fas fa-angle-right"></i> Chart of Account</a></li> -->
+                            <!-- <li class=""><a href="<?php echo base_url(); ?>admin/accounts"><i class="fas fa-angle-right"></i> Chart of Account</a></li>
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Opening Balance</a></li>
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Bank Payment</a></li>
-                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Bank Receive</a></li>                    
+                            <li class=""><a href="#"><i class="fas fa-angle-right"></i> Bank Receive</a></li>  -->                   
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Cash Adjustment</a></li>
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Cash Payment</a></li>
                             <li class=""><a href="#"><i class="fas fa-angle-right"></i> Cash Receipt</a></li> 
