@@ -132,7 +132,7 @@
                                         <select name="level_id" id="level_id" class="form-control" >
                                             <option value="">-- Please Select --</option>
                                             <?php if($levelslist) { foreach($levelslist as $level){ ?>
-                                                <option value="<?php echo $level['id']; ?>" ><?php echo $level['level_name']; ?> <?php echo $level['parent_name'] ?  '&nsbp;&nsbp;|| Parent: '. $level['parent_name'] : '' ?></option>
+                                                <option value="<?php echo $level['id']; ?>" ><?php echo $level['level_name']; ?> <?php echo $level['parent_name'] ?  ' || Parent: '. $level['parent_name'] : '' ?></option>
                                             <?php } } ?>
                                         </select>
                                     </div>
