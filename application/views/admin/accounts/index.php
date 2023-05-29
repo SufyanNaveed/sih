@@ -38,7 +38,7 @@
                                                 <td class="mailbox-name"> <?php echo $account["level_name"]; ?> </td>
                                                 <td class="mailbox-name"> <?php echo $account["account_no"]; ?> </td>
                                                 <td class="mailbox-name"> <?php echo $account["name"]; ?> </td>
-                                                <td class="mailbox-name"> <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($account['date'])) ?></td>
+                                                <td class="mailbox-name"> <?php echo date("Y-m-d", strtotime($account['adate'])); ?></td>
                                                 <td class="mailbox-name"> <?php echo $account["balance"]; ?>  </td>
                                                 <td class="mailbox-name"><?php echo $account['account_type']; ?></td>
                                                 <td class="mailbox-name"><?php echo $account['description']; ?></td>
