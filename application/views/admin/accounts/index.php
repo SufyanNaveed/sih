@@ -19,6 +19,7 @@
                             <table class="table table-hover table-striped table-bordered example">
                                 <thead>
                                     <tr>
+                                        <th><?php echo 'Level'; ?> </th> 
                                         <th><?php echo 'Account No'; ?> </th> 
                                         <th><?php echo 'Account'. $this->lang->line('name'); ?> </th> 
                                         <th><?php echo $this->lang->line('date'); ?> </th>
@@ -34,6 +35,7 @@
                                     <?php if (empty($accountslist)) { } else {
                                         foreach ($accountslist as $account) { ?>
                                             <tr>
+                                                <td class="mailbox-name"> <?php echo $account["level_name"]; ?> </td>
                                                 <td class="mailbox-name"> <?php echo $account["account_no"]; ?> </td>
                                                 <td class="mailbox-name"> <?php echo $account["name"]; ?> </td>
                                                 <td class="mailbox-name"> <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($account['date'])) ?></td>
@@ -124,7 +126,18 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1"><?php echo 'Select Level'; ?><small class="req"> *</small></label>
+                                        <select name="level_id" id="level_id" class="form-control" >
+                                            <option value="">-- Please Select --</option>
+                                            <?php if($levelslist) { foreach($levelslist as $level){ ?>
+                                                <option value="<?php echo $level['id']; ?>" ><?php echo $level['level_name']; ?> <?php echo $level['parent_name'] ?  '&nsbp;&nsbp;|| Parent: '. $level['parent_name'] : '' ?></option>
+                                            <?php } } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1"><?php echo $this->lang->line('description'); ?></label>
                                         <textarea class="form-control" id="description" name="description" placeholder="" rows="3" placeholder="Enter ..."><?php echo set_value('description'); ?></textarea>
@@ -151,7 +164,7 @@
         <div class="modal-content modal-media-content">
             <div class="modal-header modal-media-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="box-title"> <?php echo $this->lang->line('edit_income'); ?></h4>
+                <h4 class="box-title"> <?php echo $this->lang->line('edit_account'); ?></h4>
             </div>
 
             <div class="modal-body pt0 pb0">

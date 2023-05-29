@@ -27,7 +27,19 @@
             </div>
         </div>
 
-        <div class="col-sm-12">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="exampleInputEmail1"><?php echo 'Select Level'; ?><small class="req"> *</small></label>
+                <select name="level_id" id="level_id" class="form-control" >
+                    <option value="">-- Please Select --</option>
+                    <?php if($levelslist) { foreach($levelslist as $row){ ?>
+                        <option value="<?php echo $row['id']; ?>" <?php echo $account['level_id'] == $row['id'] ? 'selected': ''; ?>><?php echo $row['level_name']; ?> <?php echo $row['parent_name'] ? '        || Parent: '. $row['parent_name'] : '' ?></option>
+                    <?php } } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
             <div class="form-group">
                 <label for="exampleInputEmail1"><?php echo $this->lang->line('description'); ?></label>
                 <textarea class="form-control" id="description" name="description" placeholder="" rows="3" placeholder="Enter ..."><?php echo set_value('description'); ?><?php echo set_value('description', $account['description']) ?></textarea>

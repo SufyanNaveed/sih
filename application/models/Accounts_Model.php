@@ -38,14 +38,16 @@ class Accounts_model extends CI_Model
 
     public function get($id = null)
     {
-        $this->db->select('*');
+        $this->db->select('accounts.*, levels.level_name');
         $this->db->from('accounts'); 
+        $this->db->join('levels','accounts.level_id = levels.id','left'); 
         if ($id != null) {
             $this->db->where('accounts.id', $id);
         } else {
             $this->db->order_by('accounts.id', 'DESC');
         }
         $query = $this->db->get();
+        // echo '<pre>'; print_r($this->db->last_query());exit;
         if ($id != null) {
             return $query->row_array();
         } else {

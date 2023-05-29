@@ -4,7 +4,7 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Accounts extends Admin_Controller
+class Levels extends Admin_Controller
 {
 
     public function __construct()
@@ -19,55 +19,41 @@ class Accounts extends Admin_Controller
     public function index()
     {
 
-        if (!$this->module_lib->hasActive('accounts')) {
+        if (!$this->module_lib->hasActive('levels')) {
             access_denied();
         } 
-        $this->session->set_userdata('top_menu', 'accounts');
-        $this->session->set_userdata('sub_menu', 'accounts/index');
-        $data['title']       = 'Add Accounts';
-        $data['title_list']  = 'Recent Accounts';
-        $accounts_result       = $this->accounts_model->get();
+        $this->session->set_userdata('top_menu', 'levels');
+        $this->session->set_userdata('sub_menu', 'levels/index');
+        $data['title']       = 'Add levels';
+        $data['title_list']  = 'Recent levels';
         $levels_result       = $this->levels_model->get();
-        $data['accountslist']  = $accounts_result;
         $data['levelslist']  = $levels_result;
         $this->load->view('layout/header', $data);
-        $this->load->view('admin/accounts/index', $data);
+        $this->load->view('admin/levels/index', $data);
         $this->load->view('layout/footer', $data);
     }
 
     public function add()
     {
-        $this->session->set_userdata('top_menu', 'accounts');
-        $this->session->set_userdata('sub_menu', 'accounts/index');
-        $data['title']      = 'Add accounts';
-        $data['title_list'] = 'Recent accountss'; 
-        $this->form_validation->set_rules('balance', $this->lang->line('balance'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('level_id', $this->lang->line('level_id'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean'); 
-        $this->form_validation->set_rules('account_no', $this->lang->line('account_no'), 'trim|required|xss_clean'); 
-        $this->form_validation->set_rules('acc_type', $this->lang->line('acc_type'), 'trim|required|xss_clean'); 
+        $this->session->set_userdata('top_menu', 'levels');
+        $this->session->set_userdata('sub_menu', 'levels/index');
+        $data['title']      = 'Add levels';
+        $data['title_list'] = 'Recent levels'; 
+        $this->form_validation->set_rules('level_name', $this->lang->line('level_name'), 'trim|required|xss_clean'); 
+        
         if ($this->form_validation->run() == false) {
             $msg = array(
-                'name'          => form_error('name'),
-                'account_no'    => form_error('account_no'),
-                'account_type'      => form_error('acc_type'),
-                'adate'          => date('Y-m-d H:i:s'),
-                'balance'       => form_error('balance'), 
-                'level_id'   => form_error('level_id'), 
+                'level_name'          => form_error('level_name'),  
             );
 
             $array = array('status' => 'fail', 'error' => $msg, 'message' => '');
         } else {
             $data = array(
-                'name'          => $_POST['name'],
-                'account_no'    => $_POST['account_no'],
-                'account_type'  => $_POST['acc_type'],
-                'adate'          => Date('Y-m-d H:i:s'),
-                'balance'       => $_POST['balance'], 
-                'description'   => $_POST['description'],
-                'level_id'      => $_POST['level_id']
+                'parent_id'    => $_POST['parent_id'] ? $_POST['parent_id'] : 0, 
+                'level_name'   => $_POST['level_name'], 
+                'status'       => 1, 
             );
-            $insert_id = $this->accounts_model->add($data);
+            $insert_id = $this->levels_model->add($data);
             $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
         }
         echo json_encode($array);
@@ -75,70 +61,62 @@ class Accounts extends Admin_Controller
 
     public function delete($id)
     {
-        if (!$this->rbac->hasPrivilege('accounts', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('levels', 'can_delete')) {
             access_denied();
         }
-        $data['title'] = 'Fees Master List';
-        $this->accounts_model->remove($id);
-        redirect('admin/accounts/index');
+        $data['title'] = 'Levels List';
+        $this->levels_model->remove($id);
+        redirect('admin/levels/index');
     }
 
     public function create()
     {
         $data['title'] = 'Add Fees Master';
-        $this->form_validation->set_rules('accounts', 'Fees Master', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('levels', 'Fees Master', 'trim|required|xss_clean');
         if ($this->form_validation->run() == false) {
             $this->load->view('layout/header', $data);
-            $this->load->view('accounts/accountsCreate', $data);
+            $this->load->view('levels/levelsCreate', $data);
             $this->load->view('layout/footer', $data);
         } else {
             $data = array(
-                'accounts' => $this->input->post('accounts'),
+                'levels' => $this->input->post('levels'),
             );
-            $this->accounts_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">accounts added successfully</div>');
-            redirect('accounts/index');
+            $this->levels_model->add($data);
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">levels added successfully</div>');
+            redirect('levels/index');
         }
     }
 
-     
-
     public function getDataByid($id)
     {
-        $data['title']       = 'Edit Accounts';
+        $data['title']       = 'Edit levels';
         $data['id']          = $id;
-        $accounts              = $this->accounts_model->get($id);
-        $data['account']      = $accounts;
-        $levels_result       = $this->levels_model->get();
-        $data['levelslist']      = $levels_result;
-        $this->load->view('admin/accounts/editModal', $data);
+        $levels              = $this->levels_model->get($id);
+        $data['levelslist']  = $this->levels_model->get();
+        $data['level']       = $levels;
+        $this->load->view('admin/levels/editModal', $data);
     }
 
     public function edit($id)
     {
-        $data['title']       = 'Edit Accounts';
+        $data['title']       = 'Edit levels';
         $data['id']          = $id;
-        $data['title_list']  = 'Accounts List'; 
-        $this->form_validation->set_rules('account_no', $this->lang->line('account_no'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean'); 
-        $this->form_validation->set_rules('level_id', $this->lang->line('level_id'), 'trim|required|xss_clean'); 
+        $data['title_list']  = 'levels List'; 
+        $this->form_validation->set_rules('level_name', $this->lang->line('level_name'), 'trim|required|xss_clean'); 
         if ($this->form_validation->run() == false) {
             $msg = array(
-                'name'          => form_error('name'),
-                'account_no'    => form_error('account_no'),
-                'level_id'    => form_error('level_id'),
+                'level_name'          => form_error('level_name'),  
             );
             $array = array('status' => 'fail', 'error' => $msg, 'message' => '');
 
         } else {
             $data = array(
-                'id'            => $id,
-                'name'          => $this->input->post("name"),
-                'account_no'    => $this->input->post("account_no"),
-                'description'   => $this->input->post("description"),
-                'level_id'      => $this->input->post("level_id")
+                'id' => $id, 
+                'parent_id'    => $_POST['parent_id'] ? $_POST['parent_id'] : 0, 
+                'level_name'   => $_POST['level_name'], 
+                'status'       => 1, 
             );
-            $insert_id = $this->accounts_model->add($data);
+            $insert_id = $this->levels_model->add($data);
             $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('update_message'));
         }
 
@@ -148,17 +126,17 @@ class Accounts extends Admin_Controller
      
     public function bank_payment()
     {
-        if (!$this->module_lib->hasActive('accounts')) {
+        if (!$this->module_lib->hasActive('levels')) {
             access_denied();
         } 
-        $this->session->set_userdata('top_menu', 'accounts');
-        $this->session->set_userdata('sub_menu', 'accounts/bank_payment');
+        $this->session->set_userdata('top_menu', 'levels');
+        $this->session->set_userdata('sub_menu', 'levels/bank_payment');
         $data['title']       = 'Bank Payment';
         $data['title_list']  = 'Bank Payment';
-        $data['accounts'] =  $this->accounts_model->get();
-        $data['voucher_no']  = $this->accounts_model->Spayment();
+        $data['levels'] =  $this->levels_model->get();
+        $data['voucher_no']  = $this->levels_model->Spayment();
         $this->load->view('layout/header', $data); 
-        $this->load->view('admin/accounts/bank_payment', $data);
+        $this->load->view('admin/levels/bank_payment', $data);
         $this->load->view('layout/footer', $data);
     }
     
@@ -169,7 +147,7 @@ class Accounts extends Admin_Controller
          $this->form_validation->set_rules('txtCode', 'code'  ,'required|max_length[30]');
           $this->form_validation->set_rules('txtAmount', 'amount'  ,'required|max_length[30]');
          if ($this->form_validation->run()) { 
-        if ($this->accounts_model->bank_payment_insert()) { 
+        if ($this->levels_model->bank_payment_insert()) { 
           $this->session->set_flashdata('message', 'Save successfully');
           redirect('bank_payment');
         }else{
@@ -186,17 +164,17 @@ class Accounts extends Admin_Controller
 
     public function bank_recieve()
     {
-        if (!$this->module_lib->hasActive('accounts')) {
+        if (!$this->module_lib->hasActive('levels')) {
             access_denied();
         } 
-        $this->session->set_userdata('top_menu', 'accounts');
-        $this->session->set_userdata('sub_menu', 'accounts/bank_recieve');
+        $this->session->set_userdata('top_menu', 'levels');
+        $this->session->set_userdata('sub_menu', 'levels/bank_recieve');
         $data['title']       = 'Bank Receive';
         $data['title_list']  = 'Bank Receive';
-        $data['accounts'] =  $this->accounts_model->get();
-        $data['voucher_no']  = $this->accounts_model->Creceive();
+        $data['levels'] =  $this->levels_model->get();
+        $data['voucher_no']  = $this->levels_model->Creceive();
         $this->load->view('layout/header', $data); 
-        $this->load->view('admin/accounts/bank_recieve', $data);
+        $this->load->view('admin/levels/bank_recieve', $data);
         $this->load->view('layout/footer', $data);
     }
     
@@ -204,17 +182,17 @@ class Accounts extends Admin_Controller
     
     
     
-    public function accountsSearch()
+    public function levelsSearch()
     {
-        if (!$this->rbac->hasPrivilege('accounts_report', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('levels_report', 'can_view')) {
             access_denied();
         }
 
         $this->session->set_userdata('top_menu', 'Reports');
-        $this->session->set_userdata('sub_menu', 'admin/accounts/accountssearch');
-        $select     = 'accounts.id,accounts.date,accounts.name,accounts.invoice_no,accounts.amount,accounts.documents,accounts.note,accounts_head.accounts_category,accounts.inc_head_id';
-        $join       = array('JOIN accounts_head ON accounts.inc_head_id = accounts_head.id');
-        $table_name = "accounts";
+        $this->session->set_userdata('sub_menu', 'admin/levels/levelssearch');
+        $select     = 'levels.id,levels.date,levels.name,levels.invoice_no,levels.amount,levels.documents,levels.note,levels_head.levels_category,levels.inc_head_id';
+        $join       = array('JOIN levels_head ON levels.inc_head_id = levels_head.id');
+        $table_name = "levels";
 
         $search_type = $this->input->post("search_type");
         if (isset($search_type)) {
@@ -227,7 +205,7 @@ class Accounts extends Admin_Controller
             $search_type = "";
             $listMessage = $this->report_model->getReport($select, $join, $table_name);
         } else {
-            $search_table     = "accounts";
+            $search_table     = "levels";
             $search_column    = "date";
             $additional       = array();
             $additional_where = array();
@@ -237,7 +215,7 @@ class Accounts extends Admin_Controller
         $data["searchlist"]  = $this->search_type;
         $data["search_type"] = $search_type;
         $this->load->view('layout/header', $data);
-        $this->load->view('admin/accounts/accountsSearch', $data);
+        $this->load->view('admin/levels/levelsSearch', $data);
         $this->load->view('layout/footer', $data);
     }
 
@@ -247,7 +225,7 @@ class Accounts extends Admin_Controller
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Reports');
-        $this->session->set_userdata('sub_menu', 'admin/accounts/transactionreport');
+        $this->session->set_userdata('sub_menu', 'admin/levels/transactionreport');
         $search_type = $this->input->post("search_type");
         if (isset($search_type)) {
             $search_type = $this->input->post("search_type");
@@ -306,10 +284,10 @@ class Accounts extends Admin_Controller
                 'search_column'                           => 'date',
                 'select'                                  => 'ambulance_call.*,ambulance_call.id as reff,patients.patient_name',
                 'join'                                    => array('JOIN patients ON ambulance_call.patient_name=patients.id')),
-            'accounts'                 => array('label' => 'General accounts', 'table' => 'accounts', 'search_table' => 'accounts',
+            'levels'                 => array('label' => 'General levels', 'table' => 'levels', 'search_table' => 'levels',
                 'search_column'                           => 'date',
-                'select'                                  => 'accounts.*,accounts.name as patient_name,accounts.invoice_no as reff',
-                'join'                                    => array('JOIN accounts_head ON accounts.inc_head_id = accounts_head.id')),
+                'select'                                  => 'levels.*,levels.name as patient_name,levels.invoice_no as reff',
+                'join'                                    => array('JOIN levels_head ON levels.inc_head_id = levels_head.id')),
             'expense'                => array('label' => 'Expenses', 'table' => 'expenses', 'search_table' => 'expenses',
                 'search_column'                           => 'date',
                 'select'                                  => 'expenses.*,expenses.name as patient_name,expenses.invoice_no as reff',
@@ -393,14 +371,14 @@ class Accounts extends Admin_Controller
         $data["search_type"] = $search_type;
         //echo '<pre>'; print_r($data);exit;
         $this->load->view('layout/header', $data);
-        $this->load->view('admin/accounts/transactionReport', $data);
+        $this->load->view('admin/levels/transactionReport', $data);
         $this->load->view('layout/footer', $data);
     }
 
-    public function accountsgroup()
+    public function levelsgroup()
     {
         $this->session->set_userdata('top_menu', 'Reports');
-        $this->session->set_userdata('sub_menu', 'reports/accountsgroup');
+        $this->session->set_userdata('sub_menu', 'reports/levelsgroup');
         if (isset($_POST['search_type'])) {
             $search_type = $this->input->post("search_type");
         } else {
@@ -412,11 +390,11 @@ class Accounts extends Admin_Controller
         }
         $data["searchlist"]  = $this->search_type;
         $data["search_type"] = $search_type;
-        $accountsList          = $this->accounts_model->searchaccountsgroup($search_type, $head_id);
-        $data['headlist']    = $this->accountshead_model->get();
-        $data['accountsList']  = $accountsList;
+        $levelsList          = $this->levels_model->searchlevelsgroup($search_type, $head_id);
+        $data['headlist']    = $this->levelshead_model->get();
+        $data['levelsList']  = $levelsList;
         $this->load->view('layout/header', $data);
-        $this->load->view('admin/accounts/groupaccountsReport', $data);
+        $this->load->view('admin/levels/grouplevelsReport', $data);
         $this->load->view('layout/footer', $data);
     }
 }

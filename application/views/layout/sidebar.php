@@ -177,6 +177,8 @@ if (($this->module_lib->hasActive('income')) || ($this->module_lib->hasActive('e
                             <i class="fas fa-money-bill-wave"></i> <span><?php echo $this->lang->line('finance'); ?></span> <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
+                            <li class=""><a href="<?php echo base_url(); ?>admin/levels"><i class="fas fa-angle-right"></i> Levels </a></li>
+                            
                             <?php if ($this->module_lib->hasActive('income')) {
                             if ($this->rbac->hasPrivilege('income', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('income/index'); ?>"><a href="<?php echo base_url(); ?>admin/income"><i class="fas fa-angle-right"></i> <?php echo $this->lang->line('income'); ?> </a></li>
