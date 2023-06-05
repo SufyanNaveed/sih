@@ -12,9 +12,13 @@
         
         <div class="col-sm-6">
             <div class="form-group">
-                <label for="exampleInputEmail1"><?php echo 'Account No'; ?><small class="req"> *</small></label>
-                <input id="account_no" name="account_no" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name', $account['account_no']); ?>" />
-                <span class="text-danger"><?php echo form_error('name'); ?></span>
+                <label for="exampleInputEmail1"><?php echo 'Select Level'; ?><small class="req"> *</small></label>
+                <select name="level_id" id="level_id" class="form-control" >
+                    <option value="">-- Please Select --</option>
+                    <?php if($levelslist) { foreach($levelslist as $row){ ?>
+                        <option value="<?php echo $row['id']; ?>" data-level-no = "<?php echo $level['level_no']; ?>" <?php echo $account['level_id'] == $row['id'] ? 'selected': ''; ?> > <?php echo $row['level_no'].'&nbsp;&nbsp;'.$row['level_name']; ?></option>
+                    <?php } } ?>
+                </select>
             </div>
         </div>
 
@@ -23,22 +27,23 @@
                 <label for="exampleInputEmail1"><?php echo $this->lang->line('name'); ?><small class="req"> *</small></label>
                 <input id="name" name="name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name', $account['name']); ?>" />
                 <input id="account_id" type="hidden" class="form-control"  value="<?php echo $account['id']; ?>" />
+                <input id="level_no" type="hidden" class="form-control"  value="<?php echo $account['level_no']; ?>" />
                 <span class="text-danger"><?php echo form_error('name'); ?></span>
             </div>
         </div>
 
+
         <div class="col-sm-6">
             <div class="form-group">
-                <label for="exampleInputEmail1"><?php echo 'Select Level'; ?><small class="req"> *</small></label>
-                <select name="level_id" id="level_id" class="form-control" >
-                    <option value="">-- Please Select --</option>
-                    <?php if($levelslist) { foreach($levelslist as $row){ ?>
-                        <option value="<?php echo $row['id']; ?>" <?php echo $account['level_id'] == $row['id'] ? 'selected': ''; ?>><?php echo $row['level_name']; ?> <?php echo $row['parent_name'] ? '        || Parent: '. $row['parent_name'] : '' ?></option>
-                    <?php } } ?>
-                </select>
+                <label for="exampleInputEmail1"><?php echo 'Account No'; ?><small class="req"> *</small></label>
+                <input id="account_no" name="account_no" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name', $account['account_no']); ?>" readonly />
+                <span class="text-danger"><?php echo form_error('name'); ?></span>
             </div>
         </div>
 
+        
+
+        
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="exampleInputEmail1"><?php echo $this->lang->line('description'); ?></label>
@@ -100,6 +105,11 @@
             format: date_format,
             endDate: '+0d',
             autoclose: true
+        });
+    
+        $('#level_id').change(function(){
+            var level_no = $('option:selected', this).attr('data-level-no'); 
+            $('#level_no').val(level_no);
         });
     });
 </script>

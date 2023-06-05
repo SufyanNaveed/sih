@@ -5,7 +5,7 @@
         <div class="panel panel-bd lobidrag">
             <div class="panel-heading">
                 <div class="box-header with-border">
-                    <h4> Bank Payment </h4>
+                    <h4> Cash Receipt </h4>
                 </div>
             </div>
             <div class="panel-body">
@@ -15,9 +15,9 @@
                         <div class="col-sm-4">
                              <input type="text" name="txtVNo" id="txtVNo" value="<?php if(!empty($voucher_no[0]['voucher'])){
                                $vn = substr($voucher_no[0]['voucher'],3)+1;
-                              echo $voucher_n = 'BM-'.$vn;
+                              echo $voucher_n = 'CR-'.$vn;
                              }else{
-                               echo $voucher_n = 'BM-1';
+                               echo $voucher_n = 'CR-1';
                              } ?>" class="form-control" readonly>
                         </div>
                     </div> 
@@ -33,8 +33,8 @@
                         <div class="col-sm-4">
                             <select name="paytype" class="form-control" required="" onchange="bank_paymet(this.value)" tabindex="3">
                                 <option value="">Please Select</option>
-                                <option value="1" disabled>Cash Payment</option>
-                                <option value="2" selected>Bank Payment</option> 
+                                <option value="1" selected>Cash Payment</option>
+                                <option value="2" disabled>Bank Payment</option> 
                             </select> 
                         </div> 
                     </div>
@@ -85,7 +85,7 @@
                                         </td>
                                     <td><input type="text" name="txtCode" value="" class="form-control "  id="txtCode_1" readonly=""></td>
                                     <td><input type="number" name="txtAmount" value="" class="form-control total_price text-right"  id="txtAmount_1"  required>
-                                        </td>
+                                    </td>
                                 
                                 </tr>                              
                             
@@ -146,7 +146,7 @@ $(document).ready(function (e) {
             $("#add_transactionbtn").button('loading');
             e.preventDefault();
             $.ajax({
-                url: '<?php echo base_url(); ?>admin/accounts/create_bank_payment',
+                url: '<?php echo base_url(); ?>admin/accounts/create_bank_recieve',
                 type: "POST",
                 data: new FormData(this),
                 dataType: 'json',

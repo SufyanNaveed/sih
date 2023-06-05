@@ -19,6 +19,7 @@
                             <table class="table table-hover table-striped table-bordered example">
                                 <thead>
                                     <tr>
+                                        <th><?php echo 'Level No'; ?> </th> 
                                         <th><?php echo 'Level '. $this->lang->line('name'); ?> </th> 
                                         <th><?php echo 'Parent Level'; ?> </th> 
                                         <th><?php echo 'Status'; ?> </th> 
@@ -29,6 +30,7 @@
                                     <?php if (empty($levelslist)) { } else {
                                         foreach ($levelslist as $level) { ?>
                                             <tr>
+                                                <td class="mailbox-name"> <?php echo $level["level_no"]; ?> </td>
                                                 <td class="mailbox-name"> <?php echo $level["level_name"]; ?> </td>
                                                 <td class="text-left"> <?php echo $level["parent_name"] ? $level["parent_name"] : '- - -'; ?> </td>
                                                 <td class="mailbox-name"> <?php echo $level["status"]== 1 ? 'Active' : 'Inactive'; ?>  </td>
@@ -85,7 +87,7 @@
                                             <select name="parent_id" id="parent_id" class="form-control" >
                                                 <option value="">Select Parent Level</option>
                                                 <?php if($levelslist) { foreach($levelslist as $level){ ?>
-                                                    <option value="<?php echo $level['id']; ?>"><?php echo $level['level_name']; ?></option>
+                                                    <option value="<?php echo $level['id']; ?>"><?php echo $level['level_no'].'&nbsp;&nbsp;'.$level['level_name']; ?></option>
                                                 <?php } } ?>
                                             </select>
                                         </div>

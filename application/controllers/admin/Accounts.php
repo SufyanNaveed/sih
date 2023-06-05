@@ -35,24 +35,38 @@ class Accounts extends Admin_Controller
         $this->load->view('layout/footer', $data);
     }
 
+    public function balanceSheet()
+    {
+
+        if (!$this->module_lib->hasActive('accounts')) {
+            access_denied();
+        } 
+        $this->session->set_userdata('top_menu', 'accounts');
+        $this->session->set_userdata('sub_menu', 'accounts/index');
+        $data['title']       = 'Add Accounts';
+        $data['title_list']  = 'Recent Accounts';
+        $accounts_result       = $this->accounts_model->get();
+        $levels_result       = $this->levels_model->get();
+        $data['accountslist']  = $accounts_result;
+        $data['levelslist']  = $levels_result;
+        $this->load->view('layout/header', $data);
+        $this->load->view('admin/accounts/balanceSheet', $data);
+        $this->load->view('layout/footer', $data);
+    }
+
     public function add()
     {
         $this->session->set_userdata('top_menu', 'accounts');
         $this->session->set_userdata('sub_menu', 'accounts/index');
         $data['title']      = 'Add accounts';
         $data['title_list'] = 'Recent accountss'; 
-        $this->form_validation->set_rules('balance', $this->lang->line('balance'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('level_id', $this->lang->line('level_id'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean'); 
-        $this->form_validation->set_rules('account_no', $this->lang->line('account_no'), 'trim|required|xss_clean'); 
+        $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');   
         $this->form_validation->set_rules('acc_type', $this->lang->line('acc_type'), 'trim|required|xss_clean'); 
         if ($this->form_validation->run() == false) {
             $msg = array(
                 'name'          => form_error('name'),
-                'account_no'    => form_error('account_no'),
-                'account_type'      => form_error('acc_type'),
-                'adate'          => date('Y-m-d H:i:s'),
-                'balance'       => form_error('balance'), 
+                'account_type'      => form_error('acc_type'),  
                 'level_id'   => form_error('level_id'), 
             );
 
@@ -60,13 +74,14 @@ class Accounts extends Admin_Controller
         } else {
             $data = array(
                 'name'          => $_POST['name'],
-                'account_no'    => $_POST['account_no'],
+                'level_no'    => $_POST['level_no'],
                 'account_type'  => $_POST['acc_type'],
                 'adate'          => Date('Y-m-d H:i:s'),
-                'balance'       => $_POST['balance'], 
+                'balance'       => 0, //$_POST['balance'], 
                 'description'   => $_POST['description'],
                 'level_id'      => $_POST['level_id']
             );
+            // echo '<pre>'; print_r($data); exit;
             $insert_id = $this->accounts_model->add($data);
             $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
         }
@@ -161,26 +176,22 @@ class Accounts extends Admin_Controller
         $this->load->view('admin/accounts/bank_payment', $data);
         $this->load->view('layout/footer', $data);
     }
-    
 
     public function create_bank_payment(){
         $this->form_validation->set_rules('txtCode', 'txtCode'  ,'max_length[100]');
         $this->form_validation->set_rules('paytype', 'paytype'  ,'required|max_length[2]');
-         $this->form_validation->set_rules('txtCode', 'code'  ,'required|max_length[30]');
-          $this->form_validation->set_rules('txtAmount', 'amount'  ,'required|max_length[30]');
-         if ($this->form_validation->run()) { 
-        if ($this->accounts_model->bank_payment_insert()) { 
-          $this->session->set_flashdata('message', 'Save successfully');
-          redirect('bank_payment');
+        $this->form_validation->set_rules('txtCode', 'code'  ,'required|max_length[30]');
+        $this->form_validation->set_rules('txtAmount', 'amount'  ,'required|max_length[30]');
+        if ($this->form_validation->run()) { 
+            if ($this->accounts_model->bank_payment_insert()) { 
+                $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
+            }else{
+                $array = array('status' => 'error', 'error' => '', 'message' => $this->lang->line('error_message'));
+            }
         }else{
-          $this->session->set_flashdata('exception', 'Please try again');
+            $array = array('status' => 'exception', 'error' => '', 'message' => validation_errors());
         }
-        redirect("bank_payment");
-        }else{
-          $this->session->set_flashdata('exception',   validation_errors());
-          redirect("bank_payment");
-         }
-
+        echo json_encode($array);
     }
 
 
@@ -200,8 +211,72 @@ class Accounts extends Admin_Controller
         $this->load->view('layout/footer', $data);
     }
     
+    public function create_bank_recieve(){
+        $this->form_validation->set_rules('txtCode', 'txtCode'  ,'max_length[100]');
+        $this->form_validation->set_rules('paytype', 'paytype'  ,'required|max_length[2]');
+        $this->form_validation->set_rules('txtCode', 'code'  ,'required|max_length[30]');
+        $this->form_validation->set_rules('txtAmount', 'amount'  ,'required|max_length[30]');
+        if ($this->form_validation->run()) { 
+            if ($this->accounts_model->bank_recieve_insert()) { 
+                $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
+            }else{
+                $array = array('status' => 'error', 'error' => '', 'message' => $this->lang->line('error_message'));
+            }
+        }else{
+            $array = array('status' => 'exception', 'error' => '', 'message' => validation_errors());
+        }
+        echo json_encode($array);
+
+
+    }
     
-    
+    public function cashPayment()
+    {
+        if (!$this->module_lib->hasActive('accounts')) {
+            access_denied();
+        } 
+        $this->session->set_userdata('top_menu', 'accounts');
+        $this->session->set_userdata('sub_menu', 'accounts/bank_recieve');
+        $data['title']       = 'Bank Receive';
+        $data['title_list']  = 'Bank Receive';
+        $data['accounts'] =  $this->accounts_model->get();
+        $data['voucher_no']  = $this->accounts_model->CPayment();
+        $this->load->view('layout/header', $data); 
+        $this->load->view('admin/accounts/cashPayment', $data);
+        $this->load->view('layout/footer', $data);
+    }
+
+    public function cashReceipt()
+    {
+        if (!$this->module_lib->hasActive('accounts')) {
+            access_denied();
+        } 
+        $this->session->set_userdata('top_menu', 'accounts');
+        $this->session->set_userdata('sub_menu', 'accounts/bank_recieve');
+        $data['title']       = 'Bank Receive';
+        $data['title_list']  = 'Bank Receive';
+        $data['accounts'] =  $this->accounts_model->get();
+        $data['voucher_no']  = $this->accounts_model->Creceipt();
+        $this->load->view('layout/header', $data); 
+        $this->load->view('admin/accounts/cashReceipt', $data);
+        $this->load->view('layout/footer', $data);
+    }
+
+    public function journalVoucher()
+    {
+        if (!$this->module_lib->hasActive('accounts')) {
+            access_denied();
+        } 
+        $this->session->set_userdata('top_menu', 'accounts');
+        $this->session->set_userdata('sub_menu', 'accounts/index');
+        $data['title']       = 'Add Accounts';
+        $data['title_list']  = 'Recent Accounts';
+        $transactions_result       = $this->accounts_model->get_all_transaction();
+        $data['transactionslist']  = $transactions_result;
+        $this->load->view('layout/header', $data);
+        $this->load->view('admin/accounts/journalVoucher', $data);
+        $this->load->view('layout/footer', $data);
+    }
     
     
     public function accountsSearch()

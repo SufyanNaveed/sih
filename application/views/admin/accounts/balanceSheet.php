@@ -6,12 +6,7 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title titlefix"> <?php echo $this->lang->line('accounts_list'); ?></h3>
-                        <div class="box-tools pull-right">
-                            <?php if ($this->rbac->hasPrivilege('accounts', 'can_add')) {?>
-                                <a data-toggle="modal" data-target="#myModal" class="btn btn-primary btn-sm addaccount"><i class="fa fa-plus"></i>  <?php echo $this->lang->line('add_account'); ?></a>
-                            <?php }?>
-
-                        </div>
+                        
                     </div>
                     <div class="box-body">
                         <div class="download_label"><?php echo $this->lang->line('accounts_list'); ?></div>
@@ -19,43 +14,21 @@
                             <table class="table table-hover table-striped table-bordered example">
                                 <thead>
                                     <tr>
-                                        <th><?php echo 'Level'; ?> </th> 
+                                        <th><?php echo 'Account Type'; ?> </th> 
                                         <th><?php echo 'Account No'; ?> </th> 
                                         <th><?php echo 'Account '. $this->lang->line('name'); ?> </th> 
-                                        <th><?php echo $this->lang->line('date'); ?> </th>
-                                        <!-- <th><?php echo 'Balance'; ?> </th>  -->
-                                        <th><?php echo 'Account Type'; ?> </th> 
-                                        <th><?php echo $this->lang->line('description'); ?> </th>
-                                        <th><?php echo $this->lang->line('action'); ?> </th>
-                                        <!-- <th class="text-right"><?php echo $this->lang->line('amount') . " (" . $currency_symbol . ")"; ?> </th> -->
-
+                                        <th><?php echo 'Opening Balance'; ?> </th> 
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php if (empty($accountslist)) { } else {
                                         foreach ($accountslist as $account) { ?>
                                             <tr>
-                                                <td class="mailbox-name"> <?php echo $account["level_name"]; ?> </td>
+                                                <td class="mailbox-name"><?php echo $account['account_type']; ?></td>
                                                 <td class="mailbox-name"> <?php echo $account["account_no"]; ?> </td>
                                                 <td class="mailbox-name"> <?php echo $account["name"]; ?> </td>
-                                                <td class="mailbox-name"> <?php echo date("Y-m-d", strtotime($account['adate'])); ?></td>
-                                                <!-- <td class="mailbox-name"> <?php echo $account["balance"]; ?>  </td> -->
-                                                <td class="mailbox-name"><?php echo $account['account_type']; ?></td>
-                                                <td class="mailbox-name"><?php echo $account['description']; ?></td>
-                                                <td class="mailbox-date">
-                                                    <?php if ($this->rbac->hasPrivilege('accounts', 'can_edit')) { ?>
-                                                        <a  data-target="#myeditModal" onclick="edit(<?php echo $account['id']; ?>)"  class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('edit'); ?>">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a>
-                                                    <?php } ?>
-                                                    <?php if ($this->rbac->hasPrivilege('accounts', 'can_delete')) { ?>
-                                                        <a  class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="delete_recordById('<?php echo base_url(); ?>admin/accounts/delete/<?php echo $account['id']; ?>', '<?php echo $this->lang->line('delete_message') ?>')" data-original-title="<?php echo $this->lang->line('delete') ?>">
-                                                            <i class="fa fa-trash"></i>
-                                                        </a>
-                                                    <?php } ?>
-
-
-                                                </td>
+                                                <td class="mailbox-name"> <?php echo $account["balance"]; ?>  </td>
                                             </tr>
                                         <?php }
                                     } ?> 
