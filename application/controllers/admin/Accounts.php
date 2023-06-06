@@ -181,7 +181,7 @@ class Accounts extends Admin_Controller
         $this->form_validation->set_rules('txtCode', 'txtCode'  ,'max_length[100]');
         $this->form_validation->set_rules('paytype', 'paytype'  ,'required|max_length[2]');
         $this->form_validation->set_rules('txtCode', 'code'  ,'required|max_length[30]');
-        $this->form_validation->set_rules('txtAmount', 'amount'  ,'required|max_length[30]');
+        // $this->form_validation->set_rules('txtAmount', 'amount'  ,'required|max_length[30]');
         if ($this->form_validation->run()) { 
             if ($this->accounts_model->bank_payment_insert()) { 
                 $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
@@ -215,7 +215,7 @@ class Accounts extends Admin_Controller
         $this->form_validation->set_rules('txtCode', 'txtCode'  ,'max_length[100]');
         $this->form_validation->set_rules('paytype', 'paytype'  ,'required|max_length[2]');
         $this->form_validation->set_rules('txtCode', 'code'  ,'required|max_length[30]');
-        $this->form_validation->set_rules('txtAmount', 'amount'  ,'required|max_length[30]');
+        // $this->form_validation->set_rules('txtAmount', 'amount'  ,'required|max_length[30]');
         if ($this->form_validation->run()) { 
             if ($this->accounts_model->bank_recieve_insert()) { 
                 $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));

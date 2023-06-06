@@ -204,7 +204,7 @@ class Accounts_model extends CI_Model
             'Narration'      =>  $_POST['txtRemarks'],
             'paytype'        =>  $_POST['paytype'],
             'Debit'          =>  0,
-            'Credit'         =>  $_POST['txtAmount'],
+            'Credit'         =>  $_POST['creditAmount'],
             'CreateBy'       =>  1,
             'CreateDate'     =>  date('Y-m-d H:i:s'),
         );  
@@ -216,7 +216,7 @@ class Accounts_model extends CI_Model
             'account_no'     =>  $_POST['txtCode'],
             'Narration'      =>  $_POST['txtRemarks'],
             'paytype'        =>  $_POST['paytype'],
-            'Debit'          =>  $_POST['txtAmount'],
+            'Debit'          =>  $_POST['debitAmount'],
             'Credit'         =>  0,
             'CreateBy'       =>  1,
             'CreateDate'     =>  date('Y-m-d H:i:s'),
@@ -228,8 +228,8 @@ class Accounts_model extends CI_Model
             $this->db->insert('acc_transaction',$cc);
         }
 
-        $data['balance'] = $from_bank['balance'] - $_POST['txtAmount'];
-        $data1['balance'] = $to_bank['balance'] + $_POST['txtAmount'];
+        $data['balance'] = $from_bank['balance'] - $_POST['creditAmount'];
+        $data1['balance'] = $to_bank['balance'] + $_POST['debitAmount'];
         // echo '<pre>'; print_r($data); exit;
         
         $this->db->where('id', $from_bank['id']);
@@ -255,14 +255,14 @@ class Accounts_model extends CI_Model
                 'Narration'      =>  $_POST['txtRemarks'],
                 'paytype'        =>  $_POST['paytype'],
                 'Debit'          =>  0,
-                'Credit'         =>  $_POST['txtAmount'],
+                'Credit'         =>  $_POST['creditAmount'],
                 'CreateBy'       =>  1,
                 'CreateDate'     =>  date('Y-m-d H:i:s'),
             );   
             $this->db->insert('acc_transaction',$cc); 
             
 
-            $data['balance'] = $from_bank['balance'] - $_POST['txtAmount'];
+            $data['balance'] = $from_bank['balance'] - $_POST['creditAmount'];
             $this->db->where('id', $from_bank['id']);
             $this->db->update('accounts', $data);
         
@@ -279,7 +279,7 @@ class Accounts_model extends CI_Model
                 'account_no'     =>  $_POST['txtCode'],
                 'Narration'      =>  $_POST['txtRemarks'],
                 'paytype'        =>  $_POST['paytype'],
-                'Debit'          =>  $_POST['txtAmount'],
+                'Debit'          =>  $_POST['debitAmount'],
                 'Credit'         =>  0,
                 'CreateBy'       =>  1,
                 'CreateDate'     =>  date('Y-m-d H:i:s'),
@@ -288,7 +288,7 @@ class Accounts_model extends CI_Model
              
             $this->db->insert('acc_transaction',$bankc);
            
-            $data1['balance'] = $to_bank['balance'] + $_POST['txtAmount'];
+            $data1['balance'] = $to_bank['balance'] + $_POST['debitAmount'];
             // echo '<pre>'; print_r($data); exit;
             $this->db->where('id', $to_bank['id']);
             $this->db->update('accounts', $data1);

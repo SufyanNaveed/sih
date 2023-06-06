@@ -67,7 +67,8 @@
                                 <tr>
                             <th class="text-center">Account Name<i class="text-danger">*</i></th>
                             <th class="text-center">Account No</th>
-                            <th class="text-center">Debit/Credit<i class="text-danger">*</i></th>
+                            <th class="text-center">Debit<i class="text-danger">*</i></th>
+                            <th class="text-center">Credit<i class="text-danger">*</i></th>
                                         
                                 </tr>
                             </thead>
@@ -84,9 +85,9 @@
 
                                         </td>
                                     <td><input type="text" name="txtCode" value="" class="form-control "  id="txtCode_1" readonly=""></td>
-                                    <td><input type="number" name="txtAmount" value="" class="form-control total_price text-right"  id="txtAmount_1"  required>
-                                        </td>
-                                
+                                    <td><input type="number" name="debitAmount" value="" class="form-control total_price text-right"  id="txtAmount_1"></td>
+                                    <td><input type="number" name="creditAmount" value="" class="form-control total_price text-right"  id="txtAmount_2" ></td>
+                                    
                                 </tr>                              
                             
                             </tbody>                               
